@@ -9,6 +9,7 @@
 - 备选：Multipass（完全免费）、GitHub Codespaces（每月免费额度）
 - 装好后：`sudo apt install build-essential cmake g++ git gdb apache2-utils`
 - 压测工具：`ab`（apache2-utils 自带），`wrk` 从源码编译
+- 性能剖析：OrbStack VM 内 `perf` 受限（VM 内核与工具不匹配），改用 `gprof` / valgrind `callgrind`
 - 验收：能在 VM 里编译运行用 epoll/timerfd/eventfd 的代码
 
 ## 1. 技术栈决定（开工前定死）
