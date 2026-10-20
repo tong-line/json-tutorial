@@ -61,6 +61,16 @@
 - muduo 源码 `net/` 目录（EventLoop / Channel / TcpConnection / Buffer）
 - 陈硕知乎专栏：one loop per thread、多线程服务器的适用场合
 
+### 5.1 参考书导读（W2 每天 30 分钟）
+
+| 章节 | 看什么 | 对应里程碑 |
+|---|---|---|
+| 第 6 章 简介 | non-blocking IO + event loop 框架、EventLoop/Channel/TcpConnection 的职责与生命周期图 | v0.2（D11-12） |
+| 第 7 章 编程示例 | echo 服务器示例代码的结构 | v0.1 → v0.2（D10-12） |
+| 第 8 章 设计与实现 | Buffer 前置空间、TcpConnection 的 shared_ptr 生命周期、handleClose 时机、EventLoopThread | v0.2/v0.3（D13-18） |
+
+读法：先看讲解，再合上书自己写；写不出来再回去翻，**不要对着抄**。
+
 ## 6. 验收标准（= 简历可写的内容）
 
 - [ ] echo / HTTP 服务器可运行，ab/wrk 压测有数字（QPS、并发连接）
