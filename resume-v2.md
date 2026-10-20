@@ -6,7 +6,7 @@
 ## 头部
 
 **童兆霖（Zhaolin Tong）**
-📞 172-7888-1949 ｜ ✉️ ecnucoderlin@gmail.com ｜ 📍 上海 ｜ GitHub: 【链接】
+📞 172-7888-1949 ｜ ✉️ ecnucoderlin@gmail.com ｜ 📍 上海 ｜ GitHub: https://github.com/tong-line
 
 ## 求职意向
 
@@ -14,7 +14,7 @@ C++ 开发实习生（Linux 后端 / AI 应用方向）｜ 上海 ｜ 每周 5 �
 
 ## 教育
 
-**华东师范大学（985/211）** ｜ 软件工程 · 硕士 ｜ 2025.09 – 至今
+**华东师范大学（985/211）** ｜ 软件工程 · 硕士 ｜ 2025【月】 – 至今
 - 研究方向：密码学与网络安全；课程：数据结构与算法、密码学设计与分析、计算机网络
 
 **天津财经大学** ｜ 商务英语 · 学士 ｜ 2020 – 2024
@@ -56,7 +56,7 @@ C++ 开发实习生（Linux 后端 / AI 应用方向）｜ 上海 ｜ 每周 5 �
 - 手写递归下降解析器，符合 RFC 8259，支持 Unicode 转义与完整错误定位
 - C 版基于 union + 手动内存管理，重构为 C++17 std::variant + RAII，异常安全
 - TDD 开发，全量单元测试，ASan/UBSan 验证
-- GitHub: 【链接】
+- GitHub: https://github.com/tong-line/json-tutorial
 
 ### 航电建模软件 C++/Qt 插件（与实习第一条二选一，避免重复）
 - Qt 插件机制、信号槽、JSON 参数映射与动态调用
