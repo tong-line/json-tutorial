@@ -84,7 +84,7 @@ struct Session : std::enable_shared_from_this<Session> {
             std::printf("Session 还活着，use_count = %ld\n", self.use_count());
         };
         callback();
-        std::printf("start() 结束，use_count = %ld\n", use_count());
+        std::printf("start() 结束，use_count = %ld\n", self.use_count());
     }
 };
 
