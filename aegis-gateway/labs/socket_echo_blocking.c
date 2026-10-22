@@ -10,6 +10,7 @@
 #include <unistd.h>
 
 int main(int argc, char** argv) {
+    setvbuf(stdout, NULL, _IONBF, 0);  /* 让日志立刻输出，方便观察 */
     int port = argc > 1 ? atoi(argv[1]) : 9101;
 
     int listen_fd = socket(AF_INET, SOCK_STREAM, 0);
