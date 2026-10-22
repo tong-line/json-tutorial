@@ -13,6 +13,7 @@ find_package(GTest REQUIRED)
 
 add_library(aegis_core
     src/core/version.cpp
+    src/net/echo_server.cpp
 )
 target_include_directories(aegis_core PUBLIC include)
 target_link_libraries(aegis_core PUBLIC Boost::system)
