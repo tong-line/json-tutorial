@@ -48,24 +48,13 @@ read/write → 在这个新 fd 上收发数据
 
 ## 0:10–0:30 实验 1：观察一次真实连接
 
+把 echo 服务器写成文件（`labs/py_echo_server.py`），然后**让它在 strace 下启动**——比 attach 到已有进程更可靠：
+
 终端 A：
 
 ```bash
-python3 - <<'EOF'
-import socket
-s = socket.socket()
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind(("127.0.0.1", 9001))
-s.listen()
-print("listening on 9001")
-c, addr = s.accept()
-print("accepted", addr)
-while True:
-    data = c.recv(1024)
-    if not data:
-        break
-    c.sendall(data)
-EOF
+cd ~/json-tutorial/aegis-gateway
+strace -f -e trace=network,read,write python3 labs/py_echo_server.py 9001
 ```
 
 终端 B：
@@ -75,13 +64,19 @@ nc 127.0.0.1 9001
 # 输入 hello 回车
 ```
 
-终端 C（观察系统调用）：
+终端 A 会立刻滚出系统调用（Python 内部用的名字）：
 
-```bash
-strace -f -e trace=network,read,write -p $(pgrep -f "python3 -" | head -1)
+```
+accept4(...) = 4
+recvfrom(4, "hello\n", 1024, ...) = 6
+sendto(4, "hello\n", 6, ...) = 6
 ```
 
-你会看到 `accept`、`read`、`write` 依次出现。
+连接 → 读 → 写，一目了然。
+
+> 想 attach 已经跑起来的进程（`strace -p <pid>`）可能被 ptrace 权限拦住，
+> 需要 `sudo strace -p <pid>` 或临时 `sudo sysctl -w kernel.yama.ptrace_scope=0`。
+> 初学阶段直接用“在 strace 下启动”这种方式就行。
 
 > 检查点：为什么 `nc` 一连接，服务器就打印了 "accepted"？
 
