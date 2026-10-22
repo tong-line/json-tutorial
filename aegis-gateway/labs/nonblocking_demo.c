@@ -16,7 +16,10 @@ static void show_flags(int fd, const char* label) {
 
 int main(void) {
     int fds[2];
-    pipe(fds);  /* fds[0] 读端，fds[1] 写端 */
+    if (pipe(fds) != 0) {  /* fds[0] 读端，fds[1] 写端 */
+        perror("pipe");
+        return 1;
+    }
     char buf[16];
 
     show_flags(fds[0], "初始");
@@ -32,7 +35,10 @@ int main(void) {
     printf("无数据时 read 返回 %zd, errno=%d (%s)\n", n, errno, strerror(errno));
 
     /* 第三步：写入 5 字节，再读 */
-    write(fds[1], "hello", 5);
+    if (write(fds[1], "hello", 5) != 5) {
+        perror("write");
+        return 1;
+    }
     n = read(fds[0], buf, sizeof buf);
     printf("有数据时 read 返回 %zd, 内容=%.*s\n", n, (int)n, buf);
 
