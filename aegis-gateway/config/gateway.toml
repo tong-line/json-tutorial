@@ -1,0 +1,38 @@
+# Aegis Gateway 配置样例（W2 D8 开始解析，当前尚未生效）
+
+[server]
+listen = "0.0.0.0:8080"
+io_threads = 4
+request_timeout_ms = 3000
+queue_capacity = 4096
+queue_full_policy = "reject"   # reject(429) | drop_oldest
+
+[[routes]]
+name = "users"
+match_prefix = "/api/users"
+match_methods = ["GET", "POST"]
+upstream = "users"
+
+[[routes]]
+name = "orders"
+match_prefix = "/api/orders"
+match_methods = ["GET"]
+upstream = "orders"
+
+[upstreams.users]
+base_url = "http://127.0.0.1:9001"
+connect_timeout_ms = 500
+
+[upstreams.orders]
+base_url = "http://127.0.0.1:9002"
+connect_timeout_ms = 500
+
+[[mcp_servers]]
+name = "files"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"]
+
+[[mcp_servers]]
+name = "git"
+command = "uvx"
+args = ["mcp-server-git", "--repository", "/tmp/repo"]
