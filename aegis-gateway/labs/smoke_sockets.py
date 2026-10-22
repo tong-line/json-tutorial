@@ -3,7 +3,6 @@
 
 import socket
 import subprocess
-import threading
 import time
 
 
@@ -28,21 +27,14 @@ def main() -> None:
         print("blocking:", s.recv(100))
         s.close()
 
-        results = []
-
-        def client(msg: bytes) -> None:
-            c = socket.create_connection(("127.0.0.1", 9102), timeout=2)
-            c.sendall(msg)
-            results.append(c.recv(100))
-            c.close()
-
-        threads = [threading.Thread(target=client, args=(m,)) for m in (b"one\n", b"two\n")]
-        for t in threads:
-            t.start()
-        for t in threads:
-            t.join()
-
-        print("epoll:", sorted(results))
+        # 两个连接同时保持打开，验证 epoll 版确实是并发处理
+        c1 = socket.create_connection(("127.0.0.1", 9102), timeout=2)
+        c2 = socket.create_connection(("127.0.0.1", 9102), timeout=2)
+        c1.sendall(b"one\n")
+        c2.sendall(b"two\n")
+        print("epoll:", c1.recv(100), c2.recv(100))
+        c1.close()
+        c2.close()
     finally:
         for proc in (blk, ep):
             proc.terminate()
