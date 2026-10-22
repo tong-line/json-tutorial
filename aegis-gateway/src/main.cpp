@@ -1,3 +1,4 @@
+#include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <exception>
@@ -22,7 +23,19 @@ int main(int argc, char** argv) {
                     static_cast<int>(aegis::version().size()),
                     aegis::version().data(), port);
 
+        // 把 SIGINT / SIGTERM 也变成异步事件：收到信号 → 停止 acceptor → 退出事件循环。
+        boost::asio::signal_set signals(io, SIGINT, SIGTERM);
+        signals.async_wait([&](const boost::system::error_code& ec, int signo) {
+            if (ec) {
+                return;
+            }
+            std::printf("\nreceived signal %d, shutting down\n", signo);
+            server.stop();
+            io.stop();
+        });
+
         io.run();  // 对应 epoll_wait 循环，直到没有待处理操作
+        std::puts("shutdown complete");
     } catch (const std::exception& e) {
         std::fprintf(stderr, "fatal: %s\n", e.what());
         return 1;

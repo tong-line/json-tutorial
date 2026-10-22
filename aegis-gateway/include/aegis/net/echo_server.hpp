@@ -10,6 +10,7 @@ class EchoServer {
 public:
     EchoServer(boost::asio::io_context& io, unsigned short port);
     void start();
+    void stop();
 
 private:
     void do_accept();

@@ -61,10 +61,18 @@ EchoServer::EchoServer(boost::asio::io_context& io, unsigned short port)
 
 void EchoServer::start() { do_accept(); }
 
+void EchoServer::stop() {
+    boost::system::error_code ec;
+    acceptor_.close(ec);  // 不再接受新连接；已建立的会话由 io_context 停止时回收
+}
+
 void EchoServer::do_accept() {
     // 每次 accept 完都再挂一个，对应 C 版本里 for(;;) accept 的“继续接”。
     acceptor_.async_accept(
         [this](const boost::system::error_code& ec, tcp::socket socket) {
+            if (ec == boost::asio::error::operation_aborted) {
+                return;  // acceptor 已关闭：正常退出，不再挂新的 accept
+            }
             if (!ec) {
                 std::make_shared<EchoSession>(std::move(socket))->start();
             }
